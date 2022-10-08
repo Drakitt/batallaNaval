@@ -90,26 +90,38 @@ class BatallaNaval
         }
     }
 
-    private static void DibujarBarco(List<Barco> barcoList)
+    private List<Casilla> DibujarBarco(List<Barco> barcoList)
     {
         BatallaNaval batalla = new BatallaNaval();
         List<Casilla> casillaList = new List<Casilla>();
-        Casilla miCasilla;
+        Casilla casilla;
 
-        miCasilla = new Casilla();
+        casilla = new Casilla();
 
 
         foreach (Barco barco in barcoList)
         {
             if (barco.Posicion == 0)
             {
-                for (int y = barco.CasillaInicialY; y < length; y++)
+                for (int y = barco.CasillaInicialY; y < (barco.CasillaInicialY+barco.NumeroCasillas); y++)
                 {
-                    Console.WriteLine(barco)
+                    casilla.CoordenadaX=barco.CasillaInicialX;
+                    casilla.CoordenadaY=y;
+                }
+            }else {
+                for (int x = barco.CasillaInicialX; x < (barco.CasillaInicialX+barco.NumeroCasillas); x++)
+                {
+                    casilla.CoordenadaY=barco.CasillaInicialY;
+                    casilla.CoordenadaX=x;
                 }
             }
+            casilla.EspacioDisp = " B |";
+            casilla.Estado = 1;
+            
+            casillaList.Add(casilla);
+            
         }
-
+        return casillaList;
     }
     private static void DibujarCuadricula()
     {
