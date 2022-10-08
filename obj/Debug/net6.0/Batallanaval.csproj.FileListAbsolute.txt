@@ -1,0 +1,15 @@
+C:\Users\raque\Documents\Trabajos codeChallenges\Batallanaval\bin\Debug\net6.0\Batallanaval.exe
+C:\Users\raque\Documents\Trabajos codeChallenges\Batallanaval\bin\Debug\net6.0\Batallanaval.deps.json
+C:\Users\raque\Documents\Trabajos codeChallenges\Batallanaval\bin\Debug\net6.0\Batallanaval.runtimeconfig.json
+C:\Users\raque\Documents\Trabajos codeChallenges\Batallanaval\bin\Debug\net6.0\Batallanaval.dll
+C:\Users\raque\Documents\Trabajos codeChallenges\Batallanaval\bin\Debug\net6.0\Batallanaval.pdb
+C:\Users\raque\Documents\Trabajos codeChallenges\Batallanaval\obj\Debug\net6.0\Batallanaval.csproj.AssemblyReference.cache
+C:\Users\raque\Documents\Trabajos codeChallenges\Batallanaval\obj\Debug\net6.0\Batallanaval.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\raque\Documents\Trabajos codeChallenges\Batallanaval\obj\Debug\net6.0\Batallanaval.AssemblyInfoInputs.cache
+C:\Users\raque\Documents\Trabajos codeChallenges\Batallanaval\obj\Debug\net6.0\Batallanaval.AssemblyInfo.cs
+C:\Users\raque\Documents\Trabajos codeChallenges\Batallanaval\obj\Debug\net6.0\Batallanaval.csproj.CoreCompileInputs.cache
+C:\Users\raque\Documents\Trabajos codeChallenges\Batallanaval\obj\Debug\net6.0\Batallanaval.dll
+C:\Users\raque\Documents\Trabajos codeChallenges\Batallanaval\obj\Debug\net6.0\refint\Batallanaval.dll
+C:\Users\raque\Documents\Trabajos codeChallenges\Batallanaval\obj\Debug\net6.0\Batallanaval.pdb
+C:\Users\raque\Documents\Trabajos codeChallenges\Batallanaval\obj\Debug\net6.0\Batallanaval.genruntimeconfig.cache
+C:\Users\raque\Documents\Trabajos codeChallenges\Batallanaval\obj\Debug\net6.0\ref\Batallanaval.dll
