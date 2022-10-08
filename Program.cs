@@ -25,19 +25,73 @@ class BatallaNaval
       ");
         string[] nombreBarcos = { "portaaviones", "acorazado", "crucero", "submarino", "destructor" };
         List<Barco> barcoList = new List<Barco>();
+
+        List<Casilla> casillaList = new List<Casilla>();
         for (int i = 0; i < 5; i++)
         {
             Console.WriteLine("Barco: " + nombreBarcos[i]);
-            barcoList.Add(batalla.SolicitarCoordenadas(nombreBarcos[i]));
+            if (casillaList.Count < 1)
+            {
+                casillaList.AddRange(batalla.SolicitarCoordenadas(nombreBarcos[i], casillaList));
+            }
+            else
+            {
+                casillaList.AddRange(batalla.SolicitarCoordenadas(nombreBarcos[i], casillaList));
+            }
+            DibujarCuadricula(casillaList);
 
         }
 
+
+
+
     }
 
-    private Barco SolicitarCoordenadas(string nombre)
+    private List<Casilla> DibujarBarco(Barco barco)
     {
+        BatallaNaval batalla = new BatallaNaval();
+        List<Casilla> casillaList = new List<Casilla>();
+        Casilla casilla;
 
 
+
+
+        if (barco.Posicion == 0)
+        {
+            for (int y = barco.CasillaInicialY; y < (barco.CasillaInicialY + barco.NumeroCasillas); y++)
+            {
+                casilla = new Casilla();
+                casilla.CoordenadaX = barco.CasillaInicialX;
+                casilla.CoordenadaY = y;
+                casilla.EspacioDisp = " B |";
+                casilla.Estado = 1;
+
+                casillaList.Add(casilla);
+
+            }
+        }
+        else
+        {
+            for (int x = barco.CasillaInicialX; x < (barco.CasillaInicialX + barco.NumeroCasillas); x++)
+            {
+                casilla = new Casilla();
+                casilla.CoordenadaY = barco.CasillaInicialY;
+                casilla.CoordenadaX = x;
+                casilla.EspacioDisp = " B |";
+                casilla.Estado = 1;
+
+                casillaList.Add(casilla);
+            }
+        }
+
+
+
+        return casillaList;
+    }////////////////////////////////////////////////////////////////////////////////////////////////////////
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////
+    //////////////////////////////////////////////////////////////////////////////////////////////////////
+    private List<Casilla> SolicitarCoordenadas(string nombre, List<Casilla> casillaList2)
+    {
         Barco barco = new Barco();
 
         switch (nombre)
@@ -58,17 +112,25 @@ class BatallaNaval
                 barco.NumeroCasillas = 2;
                 break;
         }
+        List<Casilla> casillaList = new List<Casilla>();
 
         barco.Nombre = nombre;
 
-        Console.WriteLine("Ingrese si su barco estará en Vertical, escriba 0, o si estará en horizontal escriba 1");
-        barco.Posicion = Int32.Parse(Console.ReadLine());
-        Console.WriteLine(" Ingrese coordenada numérica en la que iniciará las dimensiones de su barco del 1 al 10");
-        barco.CasillaInicialX = Int32.Parse(Console.ReadLine());
-        Console.WriteLine(" Ingrese coordenada Alfanumérica en la que iniciará las dimensiones de su barco, de la A a la J");
-        barco.CasillaInicialY = Convert.ToChar(Console.ReadLine().ToUpper()) - 65;
+        Console.WriteLine("");
+        barco.Posicion = ValidarIntPos("Ingrese si su barco estará en Vertical, escriba 0, o si estará en horizontal escriba 1");
 
-        return barco;
+        barco.CasillaInicialX = ValidarInt(" Ingrese coordenada numérica en la que iniciará las dimensiones de su barco del 1 al 10");
+        barco.CasillaInicialY = ValidarStr(" Ingrese coordenada Alfanumérica en la que iniciará las dimensiones de su barco, de la A a la J") - 65;
+        
+        while (casillaList2.Find(casilla => (casilla.CoordenadaX == barco.CasillaInicialX)) != null && casillaList2.Find(casilla => (casilla.CoordenadaY == barco.CasillaInicialY)) != null)
+        {
+            barco.CasillaInicialX = ValidarInt("YA ESTA OCUPADO POR BARCO coordenada numérica en la que iniciará las dimensiones de su barco del 1 al 10");
+            barco.CasillaInicialY = ValidarStr("YA ESTA OCUPADO POR BARCO Ingrese coordenada Alfanumérica en la que iniciará las dimensiones de su barco, de la A a la J") - 65;
+        }
+
+        casillaList = DibujarBarco(barco);
+
+        return casillaList;
 
     }
     private static void CambiarEspacio(int estado)
@@ -90,46 +152,45 @@ class BatallaNaval
         }
     }
 
-    private List<Casilla> DibujarBarco(List<Barco> barcoList)
+    static int ValidarInt(string msj)
     {
-        BatallaNaval batalla = new BatallaNaval();
-        List<Casilla> casillaList = new List<Casilla>();
-        Casilla casilla;
-
-        casilla = new Casilla();
-
-
-        foreach (Barco barco in barcoList)
+        int valor;
+        Console.WriteLine(msj);
+        while (!Int32.TryParse(Console.ReadLine(), out valor) || valor < 1 || valor > 10)
         {
-            if (barco.Posicion == 0)
-            {
-                for (int y = barco.CasillaInicialY; y < (barco.CasillaInicialY+barco.NumeroCasillas); y++)
-                {
-                    casilla.CoordenadaX=barco.CasillaInicialX;
-                    casilla.CoordenadaY=y;
-                }
-            }else {
-                for (int x = barco.CasillaInicialX; x < (barco.CasillaInicialX+barco.NumeroCasillas); x++)
-                {
-                    casilla.CoordenadaY=barco.CasillaInicialY;
-                    casilla.CoordenadaX=x;
-                }
-            }
-            casilla.EspacioDisp = " B |";
-            casilla.Estado = 1;
-            
-            casillaList.Add(casilla);
-            
+            Console.WriteLine("El dato ingresado no es un entero, solo del 1 al 10, números sin espacios");
+            Console.WriteLine(msj);
         }
-        return casillaList;
+
+        return valor;
     }
-    private static void DibujarCuadricula()
+    static int ValidarIntPos(string msj)
     {
-        Casilla miCasilla;
+        int valor;
+        Console.WriteLine(msj);
+        while (!Int32.TryParse(Console.ReadLine(), out valor) || valor < 0 || valor > 1)
+        {
+            Console.WriteLine("El dato ingresado no es un entero, solo del 1 al 10, números sin espacios");
+            Console.WriteLine(msj);
+        }
 
-        miCasilla = new Casilla();
+        return valor;
+    }
+    static int ValidarStr(string msj)
+    {
+        char valor;
+        Console.WriteLine(msj);
+        while (!Char.TryParse(Console.ReadLine().ToUpper(), out valor) || valor < 65 || valor > 75)
+        {
+            Console.WriteLine("El dato ingresado no es admitido, de la A a la J solo una letra sin espacios");
+            Console.WriteLine(msj);
+        }
+
+        return (valor);
+    }
+    private static void DibujarCuadricula(List<Casilla> casillaList)
+    {
         string agua2 = "___|";
-
 
         int i = 0;
         for (i = 0; i < 10; i++)
@@ -142,15 +203,33 @@ class BatallaNaval
         {
             Console.Write("___ ");
         }
-
+        bool espacio = false;
         for (int valor = 65; valor < 75; valor++)
         {
             char letra = (char)(valor);
             Console.Write("\n" + letra + "|");
-            for (i = 0; i < 10; i++)
+            for (i = 1; i < 11; i++)
             {
-                Console.Write(miCasilla.EspacioDisp);
+                foreach (Casilla casilla in casillaList)
+                {
+                    if (casilla.CoordenadaY == (valor - 65) && casilla.CoordenadaX == i)
+                    {
+                        Console.Write(casilla.EspacioDisp);
+                        espacio = true;
+                        break;
+                    }
+                    else
+                    {
+                        espacio = false;
+                    }
+                }
+                if (espacio == false)
+                {
+                    Console.Write("   |");
+                    espacio = false;
+                }
             }
+
             Console.Write("\n |");
             for (i = 0; i < 10; i++)
             {
