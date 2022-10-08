@@ -6,7 +6,7 @@ class BatallaNaval
 
     static void Main()
     {
-        BatallaNaval batalla= new BatallaNaval();
+        BatallaNaval batalla = new BatallaNaval();
         Console.WriteLine(@"
 
  ___    __   _____   __    _     _      __        _       __    _       __    _    
@@ -24,14 +24,13 @@ class BatallaNaval
       \___________________________________________________________/
       ");
         string[] nombreBarcos = { "portaaviones", "acorazado", "crucero", "submarino", "destructor" };
-        List<Barco> barco = new List<Barco>();
+        List<Barco> barcoList = new List<Barco>();
         for (int i = 0; i < 5; i++)
         {
             Console.WriteLine("Barco: " + nombreBarcos[i]);
-            barco.Add(batalla.SolicitarCoordenadas(nombreBarcos[i]));
+            barcoList.Add(batalla.SolicitarCoordenadas(nombreBarcos[i]));
 
         }
-        DibujarCuadricula();
 
     }
 
@@ -44,23 +43,23 @@ class BatallaNaval
         switch (nombre)
         {
             case "acorazado":
-            barco.NumeroCasillas = 4;
-            break;
+                barco.NumeroCasillas = 4;
+                break;
             case "portaaviones":
-            barco.NumeroCasillas = 5;
-            break;
+                barco.NumeroCasillas = 5;
+                break;
             case "crucero":
-            barco.NumeroCasillas = 1;
-            break;
+                barco.NumeroCasillas = 1;
+                break;
             case "submarino":
-            barco.NumeroCasillas = 3;
-            break;
+                barco.NumeroCasillas = 3;
+                break;
             case "destructor":
-            barco.NumeroCasillas = 2;
-            break;
+                barco.NumeroCasillas = 2;
+                break;
         }
 
-        barco.Nombre=nombre;
+        barco.Nombre = nombre;
 
         Console.WriteLine("Ingrese si su barco estará en Vertical, escriba 0, o si estará en horizontal escriba 1");
         barco.Posicion = Int32.Parse(Console.ReadLine());
@@ -68,7 +67,7 @@ class BatallaNaval
         barco.CasillaInicialX = Int32.Parse(Console.ReadLine());
         Console.WriteLine(" Ingrese coordenada Alfanumérica en la que iniciará las dimensiones de su barco, de la A a la J");
         barco.CasillaInicialY = Convert.ToChar(Console.ReadLine().ToUpper()) - 65;
-        
+
         return barco;
 
     }
@@ -91,7 +90,27 @@ class BatallaNaval
         }
     }
 
+    private static void DibujarBarco(List<Barco> barcoList)
+    {
+        BatallaNaval batalla = new BatallaNaval();
+        List<Casilla> casillaList = new List<Casilla>();
+        Casilla miCasilla;
 
+        miCasilla = new Casilla();
+
+
+        foreach (Barco barco in barcoList)
+        {
+            if (barco.Posicion == 0)
+            {
+                for (int y = barco.CasillaInicialY; y < length; y++)
+                {
+                    Console.WriteLine(barco)
+                }
+            }
+        }
+
+    }
     private static void DibujarCuadricula()
     {
         Casilla miCasilla;
