@@ -194,7 +194,7 @@ class BatallaNaval
                 Casilla casilla2 = new Casilla();
                 casilla2.CoordenadaX = tiro.Coordenadas.CoordenadaX;
                 casilla2.CoordenadaY = tiro.Coordenadas.CoordenadaY;
-                casilla2.EspacioDisp = " 🔥 |";
+                casilla2.EspacioDisp = " @ |";
                 casilla2.Estado = 4;
 
                 casillaList.Add(casilla2);
