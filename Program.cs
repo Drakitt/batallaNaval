@@ -154,13 +154,13 @@ class BatallaNaval
     }
     private List<Casilla> DibujarTiro(Tiro tiro)
     {
+        Console.WriteLine("dibujando..");
         Tiro tiro1 = tiro;
         List<Casilla> casillaList = new List<Casilla>();
-        Casilla casilla;
 
         if (tiro.Resultado == true)
         {
-            casilla = new Casilla();
+            Casilla casilla = new Casilla();
             casilla.CoordenadaX = tiro.X;
             casilla.CoordenadaY = tiro.Y;
             casilla.EspacioDisp = " x |";
@@ -170,7 +170,7 @@ class BatallaNaval
         }
         else
         {
-            casilla = new Casilla();
+            Casilla casilla = new Casilla();
             casilla.CoordenadaX = tiro.X;
             casilla.CoordenadaY = tiro.Y;
             casilla.EspacioDisp = " - |";
