@@ -104,8 +104,8 @@ class BatallaNaval
 /_____/_/ /_/ /_/ .___/_/\___/ /___/\__,_/   \___/_/  __/ /\__,_/\___/\__, /\____/ 
                /_/                                   /___/           /____/        
 ");
-        while (jugador1.Ataque.Count(tiro => (tiro.Resultado == true)) == 15 || jugador2.Ataque.Count(tiro => (tiro.Resultado == true)) == 15)
-        {
+        
+        do {
             Console.WriteLine(@"
 
  _____ _  _ ___ __  _  __    __  _  _  __  __  __   __  ___     __  
@@ -131,7 +131,7 @@ class BatallaNaval
             jugador2 = batalla.SolicitarTiro(jugador1.Flota, jugador2);
             Console.WriteLine("Presione cualquier letra para continuar");
             continuar = Console.ReadLine();
-        }
+        } while (jugador1.Ataque.Count(tiro => (tiro.Resultado == true)) < 15 || jugador2.Ataque.Count(tiro => (tiro.Resultado == true)) < 15);
 
         if (jugador1.Ataque.Count(tiro => (tiro.Resultado == true)) > jugador1.Ataque.Count(tiro => (tiro.Resultado == true)))
         {
@@ -152,13 +152,11 @@ class BatallaNaval
         }
 
     }
-    private List<Casilla> DibujarTiro(Tiro tiro, List<Casilla> casillaList2)
+    private List<Casilla> DibujarTiro(Tiro tiro)
     {
-        BatallaNaval batalla = new BatallaNaval();
+        Tiro tiro1 = tiro;
         List<Casilla> casillaList = new List<Casilla>();
         Casilla casilla;
-
-
 
         if (tiro.Resultado == true)
         {
@@ -190,6 +188,7 @@ class BatallaNaval
     private Jugador SolicitarTiro(List<Casilla> casillasFlota, Jugador jugador)
     {
         Tiro tiro = new Tiro();
+        Jugador jugador1 = jugador;
 
 
         List<Casilla> casillaList = new List<Casilla>();
@@ -199,10 +198,14 @@ class BatallaNaval
         tiro.X = ValidarInt("Ingrese coordenada numérica X");
         tiro.Y = ValidarStr("Ingrese coordenada Alfanumérica Y") - 65;
 
+
+
         tiro.Resultado = ResultadoTiro(tiro.X, tiro.Y, casillasFlota);
 
+        Console.WriteLine(tiro.X);
+        Console.WriteLine(tiro.Y);
 
-        casillaList = DibujarTiro(tiro, casillasFlota);
+        casillaList.AddRange(DibujarTiro(tiro));
 
         jugador.Ataque.Add(tiro);
         jugador.Tablero.AddRange(casillaList);
@@ -217,10 +220,12 @@ class BatallaNaval
     {
         if (casillas.Find(casilla => (casilla.CoordenadaX == x)) != null && casillas.Find(casilla => (casilla.CoordenadaY == y)) != null)
         {
+            Console.WriteLine("acertaste");
             return true;
         }
         else
         {
+            Console.WriteLine("fallaste");
             return false;
         }
 
