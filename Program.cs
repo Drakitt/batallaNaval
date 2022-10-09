@@ -33,6 +33,9 @@ class BatallaNaval
         List<Casilla> casillaListTiro1 = new List<Casilla>();
         List<Casilla> casillaListTiro2 = new List<Casilla>();
 
+        List<Tiro> ataqueJugador1 = new List<Tiro>();
+        List<Tiro> ataqueJugador2 = new List<Tiro>();
+
         Jugador jugador1 = new Jugador();
         Jugador jugador2 = new Jugador();
         Console.WriteLine(@"
@@ -101,8 +104,9 @@ class BatallaNaval
 /_____/_/ /_/ /_/ .___/_/\___/ /___/\__,_/   \___/_/  __/ /\__,_/\___/\__, /\____/ 
                /_/                                   /___/           /____/        
 ");
-        //while
-        Console.WriteLine(@"
+        while (jugador1.Ataque.Count(tiro => (tiro.Resultado == true)) == 15 || jugador2.Ataque.Count(tiro => (tiro.Resultado == true)) == 15)
+        {
+            Console.WriteLine(@"
 
  _____ _  _ ___ __  _  __    __  _  _  __  __  __   __  ___     __  
 |_   _| || | _ \  \| |/__\  |_ \| || |/ _]/  \| _\ /__\| _ \   /  | 
@@ -110,12 +114,12 @@ class BatallaNaval
   |_|  \__/|_|_\_|\__|\__/  /___|\__/ \__/_||_|__/ \__/|_|_\    |_| ");
 
 
-        casillaListTiro1.AddRange( batalla.SolicitarTiro(jugador2.Flota, casillaListTiro1));
-        Console.WriteLine("Presione cualquier letra para continuar");
-        continuar = Console.ReadLine();
+            jugador1 = batalla.SolicitarTiro(jugador2.Flota, jugador1);
+            Console.WriteLine("Presione cualquier letra para continuar");
+            continuar = Console.ReadLine();
 
 
-        Console.WriteLine(@"
+            Console.WriteLine(@"
 
  _____ _  _ ___ __  _  __    __  _  _  __  __  __   __  ___      ___  
 |_   _| || | _ \  \| |/__\  |_ \| || |/ _]/  \| _\ /__\| _ \    (_  | 
@@ -124,9 +128,29 @@ class BatallaNaval
 
 
 
-        casillaListTiro2.AddRange(batalla.SolicitarTiro(jugador1.Flota, casillaListTiro2));
-        Console.WriteLine("Presione cualquier letra para continuar");
-        continuar = Console.ReadLine();
+            jugador2 = batalla.SolicitarTiro(jugador1.Flota, jugador2);
+            Console.WriteLine("Presione cualquier letra para continuar");
+            continuar = Console.ReadLine();
+        }
+
+        if (jugador1.Ataque.Count(tiro => (tiro.Resultado == true)) > jugador1.Ataque.Count(tiro => (tiro.Resultado == true)))
+        {
+            Console.WriteLine(@"
+  __  __  __  _  __    __  _  _  __  __  __   __  ___   __  
+ / _]/  \|  \| |/  \  |_ \| || |/ _]/  \| _\ /__\| _ \ /  | 
+| [/\ /\ | | ' | /\ |  _\ | \/ | [/\ /\ | v | \/ | v / `7 | 
+ \__/_||_|_|\__|_||_| /___|\__/ \__/_||_|__/ \__/|_|_\  |_| ");
+        }
+        else
+        {
+            Console.WriteLine(@"
+  __  __  __  _  __    __  _  _  __  __  __   __  ___   ___  
+ / _]/  \|  \| |/  \  |_ \| || |/ _]/  \| _\ /__\| _ \ (_  | 
+| [/\ /\ | | ' | /\ |  _\ | \/ | [/\ /\ | v | \/ | v /  / /  
+ \__/_||_|_|\__|_||_| /___|\__/ \__/_||_|__/ \__/|_|_\ |___| ");
+
+        }
+
     }
     private List<Casilla> DibujarTiro(Tiro tiro, List<Casilla> casillaList2)
     {
@@ -163,7 +187,7 @@ class BatallaNaval
 
 
     }
-    private List<Casilla> SolicitarTiro(List<Casilla> casillasFlota, List<Casilla> casillasTiro)
+    private Jugador SolicitarTiro(List<Casilla> casillasFlota, Jugador jugador)
     {
         Tiro tiro = new Tiro();
 
@@ -178,10 +202,14 @@ class BatallaNaval
         tiro.Resultado = ResultadoTiro(tiro.X, tiro.Y, casillasFlota);
 
 
-
         casillaList = DibujarTiro(tiro, casillasFlota);
 
-        return casillaList;
+        jugador.Ataque.Add(tiro);
+        jugador.Tablero.AddRange(casillaList);
+
+
+
+        return jugador;
 
     }
 
@@ -297,7 +325,7 @@ class BatallaNaval
         while (casillaList2.Find(casilla => (casilla.CoordenadaX == barco.CasillaInicialX)) != null && casillaList2.Find(casilla => (casilla.CoordenadaY == barco.CasillaInicialY)) != null || (10 < (barco.CasillaInicialX + barco.NumeroCasillas) && barco.Posicion == 1) || (10 < (barco.CasillaInicialY + barco.NumeroCasillas) && barco.Posicion == 0))
         {
 
-            Console.WriteLine("x" + casillaList2.Find(casilla => (casilla.CoordenadaX == barco.CasillaInicialX)));
+           // Console.WriteLine("x" + casillaList2.Find(casilla => (casilla.CoordenadaX == barco.CasillaInicialX)));
             barco.CasillaInicialX = ValidarInt("LAS CASILLAS NO ESTAN DISPONIBLES coordenada numérica en la que iniciará las dimensiones de su barco del 1 al 10");
             barco.CasillaInicialY = ValidarStr("Ingrese coordenada Alfanumérica en la que iniciará las dimensiones de su barco, de la A a la J") - 65;
         }
@@ -492,8 +520,12 @@ class Jugador
         flota.Add(new Casilla() { EspacioDisp = " B |", CoordenadaX = 0, CoordenadaY = 0, Estado = 1 });
     }
     private List<Casilla> flota;
+    private List<Casilla> tablero;
+    private List<Tiro> ataque;
 
     internal List<Casilla> Flota { get => flota; set => flota = value; }
+    internal List<Casilla> Tablero { get => tablero; set => tablero = value; }
+    internal List<Tiro> Ataque { get => ataque; set => ataque = value; }
 }
 class Tiro
 {
