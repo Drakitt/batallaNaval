@@ -65,7 +65,7 @@ class BatallaNaval
 
         Console.WriteLine("Presione cualquier letra para continuar");
         string continuar = Console.ReadLine();
-        Console.Clear();
+        //Console.Clear();
         Console.WriteLine(@"
        _                       _              ___   
       | |                     | |            |__ \  
@@ -93,7 +93,7 @@ class BatallaNaval
 
         Console.WriteLine("Presione cualquier letra para continuar");
         continuar = Console.ReadLine();
-        Console.Clear();
+       // Console.Clear();
 
         Console.WriteLine(@"
                 
@@ -205,8 +205,9 @@ class BatallaNaval
         tiro.X = ValidarInt("Ingrese coordenada numérica X");
         tiro.Y = ValidarStr("Ingrese coordenada Alfanumérica Y") - 65;
 
-        while (casillaList.Find(casilla => (casilla.CoordenadaX == tiro.X)) != null && casillaList.Find(casilla => (casilla.CoordenadaY == tiro.Y)) != null)
+        while (jugador.Tablero.Find(casilla => (casilla.CoordenadaX == tiro.X) && (casilla.CoordenadaY == tiro.Y)) != null)
         {
+            Console.WriteLine("Ya escribió esta coordenada, escriba otra");
             tiro.X = ValidarInt("Ingrese coordenada numérica X");
             tiro.Y = ValidarStr("Ingrese coordenada Alfanumérica Y") - 65;
 
@@ -231,7 +232,7 @@ class BatallaNaval
 
     private bool ResultadoTiro(int x, int y, List<Casilla> casillas)
     {
-        if (casillas.Find(casilla => (casilla.CoordenadaX == x)) != null && casillas.Find(casilla => (casilla.CoordenadaY == y)) != null)
+        if (casillas.Find(casilla => (casilla.CoordenadaX == x) && (casilla.CoordenadaY == y)) != null)
         {
             Console.WriteLine("acertaste");
             return true;
@@ -333,7 +334,6 @@ class BatallaNaval
         while ((10 < (barco.CasillaInicialX + barco.NumeroCasillas) && barco.Posicion == 1) || (10 < (barco.CasillaInicialY + barco.NumeroCasillas) && barco.Posicion == 0))
         {
 
-            // Console.WriteLine("x" + casillaList2.Find(casilla => (casilla.CoordenadaX == barco.CasillaInicialX)));
             barco.CasillaInicialX = ValidarInt("LAS CASILLAS NO ESTAN DISPONIBLES coordenada numérica en la que iniciará las dimensiones de su barco del 1 al 10");
             barco.CasillaInicialY = ValidarStr("Ingrese coordenada Alfanumérica en la que iniciará las dimensiones de su barco, de la A a la J") - 65;
         }
