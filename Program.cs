@@ -23,38 +23,83 @@ class BatallaNaval
      \                                                             /
       \___________________________________________________________/
       ");
-        string[] nombreBarcos = { "portaaviones", "acorazado", "crucero", "submarino", "destructor" };
-        List<Barco> barcoList = new List<Barco>();
+         string[] nombreBarcos = { "portaaviones", "acorazado", "crucero", "submarino", "destructor" };
 
-        List<Casilla> casillaList = new List<Casilla>();
+        List<Casilla> casillaList1 = new List<Casilla>();
+        List<Casilla> casillaList2 = new List<Casilla>();
+
+        Jugador jugador1 = new Jugador();
+        Jugador jugador2 = new Jugador();
+                Console.WriteLine(@"
+       _                       _              __  
+      | |                     | |            /_ | 
+      | |_   _  __ _  __ _  __| | ___  _ __   | | 
+  _   | | | | |/ _` |/ _` |/ _` |/ _ \| '__|  | | 
+ | |__| | |_| | (_| | (_| | (_| | (_) | |     | | 
+  \____/ \__,_|\__, |\__,_|\__,_|\___/|_|     |_| 
+                __/ |                             
+               |___/                              ");
+
         for (int i = 0; i < 5; i++)
         {
-            Console.WriteLine("Barco: " + nombreBarcos[i]);
-            if (casillaList.Count < 1)
+            if (casillaList1.Count < 1)
             {
-                casillaList.AddRange(batalla.SolicitarCoordenadas(nombreBarcos[i], casillaList));
+                casillaList1.AddRange(batalla.SolicitarCoordenadas(nombreBarcos[i], casillaList1));
             }
             else
             {
-                casillaList.AddRange(batalla.SolicitarCoordenadas(nombreBarcos[i], casillaList));
+                casillaList1.AddRange(batalla.SolicitarCoordenadas(nombreBarcos[i], casillaList1));
             }
-            DibujarCuadricula(casillaList);
+            DibujarCuadricula(casillaList1);
 
         }
+        Console.WriteLine("Presione cualquier letra para continuar");
+        string x = Console.ReadLine();
+        Console.Clear();
+        Console.WriteLine(@"
+       _                       _              ___   
+      | |                     | |            |__ \  
+      | |_   _  __ _  __ _  __| | ___  _ __     ) | 
+  _   | | | | |/ _` |/ _` |/ _` |/ _ \| '__|   / /  
+ | |__| | |_| | (_| | (_| | (_| | (_) | |     / /_  
+  \____/ \__,_|\__, |\__,_|\__,_|\___/|_|    |____| 
+                __/ |                               
+               |___/ ");
+
+
+        for (int i = 0; i < 5; i++)
+        {
+            if (casillaList2.Count < 1)
+            {
+                casillaList2.AddRange(batalla.SolicitarCoordenadas(nombreBarcos[i], casillaList2));
+            }
+            else
+            {
+                casillaList2.AddRange(batalla.SolicitarCoordenadas(nombreBarcos[i], casillaList2));
+            }
+            DibujarCuadricula(casillaList2);
+
+        }
+        jugador1.Flota = casillaList1;
+
+        jugador2.Flota = casillaList2;
+
+
+
+
 
 
 
 
     }
 
-    private List<Casilla> DibujarBarco(Barco barco)
+    private List<Casilla> DibujarBarco(Barco barco, List<Casilla> casillaList2)
     {
         BatallaNaval batalla = new BatallaNaval();
         List<Casilla> casillaList = new List<Casilla>();
         Casilla casilla;
 
-
-
+        
 
         if (barco.Posicion == 0)
         {
@@ -83,13 +128,33 @@ class BatallaNaval
                 casillaList.Add(casilla);
             }
         }
+        foreach (Casilla casillae in casillaList2)
+        {
+            Console.WriteLine("\nttt"+casillae.CoordenadaX);
+            Console.Write(casillae.CoordenadaY);
+        }
+        foreach (Casilla casillau in casillaList)
+        {
+            Console.Write("\nfff"+casillau.CoordenadaX);
+            Console.Write(casillau.CoordenadaY);
+        }
+        IEnumerable<Casilla> duplicates = casillaList2.Intersect(casillaList);
 
+        foreach (var listas in duplicates){
+            Console.WriteLine(duplicates.Any());
+        }
 
+        if (duplicates.Any())
+        {
+            Console.WriteLine("CHOCA CON OTRO BARCO, ESCRIBE NUEVAS COORDENADAS");
+            
+            return SolicitarCoordenadas(barco.Nombre, casillaList2);
+        }else {
+            return casillaList;
+        }
 
-        return casillaList;
-    }////////////////////////////////////////////////////////////////////////////////////////////////////////
-    ////////////////////////////////////////////////////////////////////////////////////////////////////////
-    //////////////////////////////////////////////////////////////////////////////////////////////////////
+        
+    }
     private List<Casilla> SolicitarCoordenadas(string nombre, List<Casilla> casillaList2)
     {
         Barco barco = new Barco();
@@ -116,19 +181,21 @@ class BatallaNaval
 
         barco.Nombre = nombre;
 
-        Console.WriteLine("");
-        barco.Posicion = ValidarIntPos("Ingrese si su barco estará en Vertical, escriba 0, o si estará en horizontal escriba 1");
+        Console.WriteLine("\n\n" + barco.Nombre.ToUpper() + ": " + barco.NumeroCasillas + " casillas\n\n");
 
-        barco.CasillaInicialX = ValidarInt(" Ingrese coordenada numérica en la que iniciará las dimensiones de su barco del 1 al 10");
-        barco.CasillaInicialY = ValidarStr(" Ingrese coordenada Alfanumérica en la que iniciará las dimensiones de su barco, de la A a la J") - 65;
-        
-        while (casillaList2.Find(casilla => (casilla.CoordenadaX == barco.CasillaInicialX)) != null && casillaList2.Find(casilla => (casilla.CoordenadaY == barco.CasillaInicialY)) != null)
+        barco.Posicion = ValidarIntPos("Ingrese si su barco estará en Vertical, escriba 0, o si estará en horizontal escriba 1");
+        barco.CasillaInicialX = ValidarInt("Ingrese coordenada numérica en la que iniciará las dimensiones de su barco del 1 al 10");
+        barco.CasillaInicialY = ValidarStr("Ingrese coordenada Alfanumérica en la que iniciará las dimensiones de su barco, de la A a la J") - 65;
+
+        while (casillaList2.Find(casilla => (casilla.CoordenadaX == barco.CasillaInicialX)) != null && casillaList2.Find(casilla => (casilla.CoordenadaY == barco.CasillaInicialY)) != null || (10 < (barco.CasillaInicialX + barco.NumeroCasillas) && barco.Posicion == 1) || (10 < (barco.CasillaInicialY + barco.NumeroCasillas) && barco.Posicion == 0))
         {
-            barco.CasillaInicialX = ValidarInt("YA ESTA OCUPADO POR BARCO coordenada numérica en la que iniciará las dimensiones de su barco del 1 al 10");
-            barco.CasillaInicialY = ValidarStr("YA ESTA OCUPADO POR BARCO Ingrese coordenada Alfanumérica en la que iniciará las dimensiones de su barco, de la A a la J") - 65;
+
+            Console.WriteLine("x" + casillaList2.Find(casilla => (casilla.CoordenadaX == barco.CasillaInicialX)));
+            barco.CasillaInicialX = ValidarInt("LAS CASILLAS NO ESTAN DISPONIBLES coordenada numérica en la que iniciará las dimensiones de su barco del 1 al 10");
+            barco.CasillaInicialY = ValidarStr("Ingrese coordenada Alfanumérica en la que iniciará las dimensiones de su barco, de la A a la J") - 65;
         }
 
-        casillaList = DibujarBarco(barco);
+        casillaList = DibujarBarco(barco, casillaList2);
 
         return casillaList;
 
@@ -250,6 +317,16 @@ class Casilla
         coordenadaY = 0;
         estado = 1;
     }
+    public bool Equals(Casilla other)
+    {
+        if (other is null)
+            return false;
+
+        return this.CoordenadaX == other.CoordenadaX && this.CoordenadaY == other.CoordenadaY;
+    }
+
+    public override bool Equals(object obj) => Equals(obj as Casilla);
+    public override int GetHashCode() => (CoordenadaX, CoordenadaY).GetHashCode();
     private string espacioDisp;
     private int coordenadaX;
     private int coordenadaY;
@@ -288,11 +365,26 @@ class Jugador
 {
     public Jugador()
     {
-        barco1 = new Barco();
+        flota = new List<Casilla>();
+        flota.Add(new Casilla() { EspacioDisp = " B |", CoordenadaX = 0, CoordenadaY = 0, Estado = 1 });
+        flota.Add(new Casilla() { EspacioDisp = " B |", CoordenadaX = 0, CoordenadaY = 0, Estado = 1 });
+        flota.Add(new Casilla() { EspacioDisp = " B |", CoordenadaX = 0, CoordenadaY = 0, Estado = 1 });
+        flota.Add(new Casilla() { EspacioDisp = " B |", CoordenadaX = 0, CoordenadaY = 0, Estado = 1 });
+        flota.Add(new Casilla() { EspacioDisp = " B |", CoordenadaX = 0, CoordenadaY = 0, Estado = 1 });
+        flota.Add(new Casilla() { EspacioDisp = " B |", CoordenadaX = 0, CoordenadaY = 0, Estado = 1 });
+        flota.Add(new Casilla() { EspacioDisp = " B |", CoordenadaX = 0, CoordenadaY = 0, Estado = 1 });
+        flota.Add(new Casilla() { EspacioDisp = " B |", CoordenadaX = 0, CoordenadaY = 0, Estado = 1 });
+        flota.Add(new Casilla() { EspacioDisp = " B |", CoordenadaX = 0, CoordenadaY = 0, Estado = 1 });
+        flota.Add(new Casilla() { EspacioDisp = " B |", CoordenadaX = 0, CoordenadaY = 0, Estado = 1 });
+        flota.Add(new Casilla() { EspacioDisp = " B |", CoordenadaX = 0, CoordenadaY = 0, Estado = 1 });
+        flota.Add(new Casilla() { EspacioDisp = " B |", CoordenadaX = 0, CoordenadaY = 0, Estado = 1  });
+        flota.Add(new Casilla() { EspacioDisp = " B |", CoordenadaX = 0, CoordenadaY = 0, Estado = 1  });
+        flota.Add(new Casilla() { EspacioDisp = " B |", CoordenadaX = 0, CoordenadaY = 0, Estado = 1  });
+        flota.Add(new Casilla() { EspacioDisp = " B |", CoordenadaX = 0, CoordenadaY = 0, Estado = 1  });
     }
-    Barco barco1;
+    private List<Casilla> flota;
 
-    internal Barco Barco1 { get => barco1; set => barco1 = value; }
+    internal List<Casilla> Flota { get => flota; set => flota = value; }
 }
 class Tiro
 {
